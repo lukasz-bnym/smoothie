@@ -1,0 +1,59 @@
+version: "3.7"
+
+services:
+  smoothie:
+    image: smoothie-app:latest
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    container_name: app
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_USER: lukasz
+      POSTGRES_PASSWORD: lukasz
+      POSTGRES_DB: smoothie_db
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - postgres
+#      - kafka
+
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    container_name: postgres
+    volumes:
+      - ./smoothie-postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: lukasz
+      POSTGRES_PASSWORD: lukasz
+
+#  zookeeper:
+#    image: confluentinc/cp-zookeeper:latest
+#    container_name: zookeeper
+#    environment:
+#      ZOOKEEPER_CLIENT_PORT: 2181
+#      ZOOKEEPER_TICK_TIME: 2000
+#    ports:
+#      - "22181:2181"
+#
+#  kafka:
+#    image: confluentinc/cp-kafka:latest
+#    container_name: kafka
+#    ports:
+#      - "29092:29092"
+#    environment:
+#      KAFKA_BROKER_ID: 1
+#      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+#      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+#      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+#      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+#
+##      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+##      KAFKA_ADVERTISED_HOST_NAME: $CF_HOST_IP
+#      KAFKA_MESSAGE_MAX_BYTES: 2000000
+#      KAFKA_CREATE_TOPICS: "SmoothieOrder:1:1"
+
+volumes:
+  smoothie-postgres-data:
