@@ -4,7 +4,7 @@ import com.app.smoothie.core.port.primary.usecase.dto.SmoothieDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-public interface CreateSmoothieService
+public interface CreateSmoothieUseCase
 {
     SmoothieDto execute(CreateSmoothieRequest request);
 

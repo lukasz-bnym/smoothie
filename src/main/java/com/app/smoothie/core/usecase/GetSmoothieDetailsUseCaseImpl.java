@@ -1,20 +1,23 @@
 package com.app.smoothie.core.usecase;
 
-import com.app.smoothie.core.port.primary.usecase.DeleteSmoothieService;
+import com.app.smoothie.core.port.primary.usecase.GetSmoothieDetailsUseCase;
 import com.app.smoothie.core.entity.Smoothie;
 import com.app.smoothie.core.port.secondary.repository.SmoothieRepository;
 import com.app.smoothie.core.port.primary.usecase.dto.EntityRequest;
+import com.app.smoothie.core.port.primary.usecase.dto.SmoothieWithDetailsDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class DeleteSmoothieServiceImpl implements DeleteSmoothieService {
+public class GetSmoothieDetailsUseCaseImpl implements GetSmoothieDetailsUseCase
+{
+
     private final SmoothieRepository repository;
 
     @Override
-    public void execute(EntityRequest request) {
+    public SmoothieWithDetailsDto execute(EntityRequest request) {
         final Smoothie smoothie = repository.findById(request.getId());
-        repository.delete(smoothie);
+        return new SmoothieWithDetailsDto(smoothie);
     }
 }

@@ -1,6 +1,6 @@
 package com.app.smoothie.core.usecase;
 
-import com.app.smoothie.core.port.primary.usecase.GetAllSmoothiesService;
+import com.app.smoothie.core.port.primary.usecase.GetAllSmoothiesUseCase;
 import com.app.smoothie.core.port.secondary.repository.SmoothieRepository;
 import com.app.smoothie.core.port.primary.usecase.dto.SmoothieDto;
 import java.util.List;
@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class GetAllSmoothiesServiceImpl implements GetAllSmoothiesService {
+public class GetAllSmoothiesUseCaseImpl implements GetAllSmoothiesUseCase
+{
 
     private final SmoothieRepository repository;
 

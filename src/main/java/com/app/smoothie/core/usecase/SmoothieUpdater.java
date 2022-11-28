@@ -1,6 +1,6 @@
 package com.app.smoothie.core.usecase;
 
-import com.app.smoothie.core.port.primary.usecase.UpdateSmoothieService;
+import com.app.smoothie.core.port.primary.usecase.UpdateSmoothieUseCase;
 import com.app.smoothie.core.entity.Smoothie;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ public class SmoothieUpdater {
         return new SmoothieUpdater(smoothie);
     }
 
-    void with(UpdateSmoothieService.UpdateSmoothieRequest request) {
+    void with(UpdateSmoothieUseCase.UpdateSmoothieRequest request) {
         smoothie.setDescription(request.getDescription());
         smoothie.setFat(request.getFat());
         smoothie.setCalories(request.getCalories());

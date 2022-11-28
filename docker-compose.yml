@@ -24,7 +24,7 @@ services:
       - "5432:5432"
     container_name: postgres
     volumes:
-      - ./smoothie-postgres-data:/var/lib/postgresql/data
+      - smoothie-postgres-data:/var/lib/postgresql/data
     environment:
       POSTGRES_USER: lukasz
       POSTGRES_PASSWORD: lukasz

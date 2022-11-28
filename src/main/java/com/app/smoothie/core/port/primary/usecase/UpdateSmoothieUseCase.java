@@ -6,7 +6,8 @@ import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
-public interface UpdateSmoothieService {
+public interface UpdateSmoothieUseCase
+{
 
     SmoothieWithDetailsDto execute(UpdateSmoothieRequest request);
 

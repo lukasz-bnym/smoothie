@@ -5,11 +5,11 @@ import com.app.smoothie.adapter.primary.rest.json.CreateSmoothieRequestJson;
 import com.app.smoothie.adapter.primary.rest.json.SmoothieJson;
 import com.app.smoothie.adapter.primary.rest.json.SmoothieWithDetailsJson;
 import com.app.smoothie.adapter.primary.rest.json.UpdateSmoothieRequestJson;
-import com.app.smoothie.core.port.primary.usecase.CreateSmoothieService;
-import com.app.smoothie.core.port.primary.usecase.DeleteSmoothieService;
-import com.app.smoothie.core.port.primary.usecase.GetAllSmoothiesService;
-import com.app.smoothie.core.port.primary.usecase.GetSmoothieDetailsService;
-import com.app.smoothie.core.port.primary.usecase.UpdateSmoothieService;
+import com.app.smoothie.core.port.primary.usecase.CreateSmoothieUseCase;
+import com.app.smoothie.core.port.primary.usecase.DeleteSmoothieUseCase;
+import com.app.smoothie.core.port.primary.usecase.GetAllSmoothiesUseCase;
+import com.app.smoothie.core.port.primary.usecase.GetSmoothieDetailsUseCase;
+import com.app.smoothie.core.port.primary.usecase.UpdateSmoothieUseCase;
 import com.app.smoothie.core.port.primary.usecase.dto.EntityRequest;
 import com.app.smoothie.core.port.primary.usecase.dto.SmoothieDto;
 import com.app.smoothie.core.port.primary.usecase.dto.SmoothieWithDetailsDto;
@@ -35,16 +35,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SmoothieController {
 
-    private final CreateSmoothieService createSmoothieService;
-    private final GetAllSmoothiesService getAllSmoothiesService;
-    private final DeleteSmoothieService deleteSmoothieService;
-    private final GetSmoothieDetailsService getSmoothieDetailsService;
-    private final UpdateSmoothieService updateSmoothieService;
+    private final CreateSmoothieUseCase createSmoothieUseCase;
+    private final GetAllSmoothiesUseCase getAllSmoothiesUseCase;
+    private final DeleteSmoothieUseCase deleteSmoothieUseCase;
+    private final GetSmoothieDetailsUseCase getSmoothieDetailsUseCase;
+    private final UpdateSmoothieUseCase updateSmoothieUseCase;
 
     @GetMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<List<SmoothieJson>> getAllSmoothies() {
-        final List<SmoothieDto> response = getAllSmoothiesService.execute();
+        final List<SmoothieDto> response = getAllSmoothiesUseCase.execute();
         return ResponseEntity.ok(response.stream()
             .map(SmoothieJson::new)
             .collect(Collectors.toList()));
@@ -53,35 +53,29 @@ public class SmoothieController {
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<SmoothieWithDetailsJson> getSmoothieById(@PathVariable("id") UUID id) {
-        final SmoothieWithDetailsDto response = getSmoothieDetailsService.execute(new EntityRequest(id));
+        final SmoothieWithDetailsDto response = getSmoothieDetailsUseCase.execute(new EntityRequest(id));
         return ResponseEntity.ok(new SmoothieWithDetailsJson(response));
     }
 
     @PostMapping
     @PreAuthorize("hasRole('BUSINESS_OWNER')")
     public ResponseEntity<SmoothieJson> createSmoothie(@RequestBody CreateSmoothieRequestJson smoothie) {
-        final CreateSmoothieService.CreateSmoothieRequest request = new CreateSmoothieService.CreateSmoothieRequest(smoothie.getName());
-        final SmoothieDto response = createSmoothieService.execute(request);
+        final CreateSmoothieUseCase.CreateSmoothieRequest request = new CreateSmoothieUseCase.CreateSmoothieRequest(smoothie.getName());
+        final SmoothieDto response = createSmoothieUseCase.execute(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(new SmoothieJson(response));
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('BUSINESS_OWNER')")
     public ResponseEntity<SmoothieWithDetailsJson> updateSmoothie(@PathVariable("id") UUID id, @RequestBody @Valid UpdateSmoothieRequestJson smoothie) {
-        final SmoothieWithDetailsDto response = updateSmoothieService.execute(UpdateSmoothieRequestMapper.map(smoothie, id));
+        final SmoothieWithDetailsDto response = updateSmoothieUseCase.execute(UpdateSmoothieRequestMapper.map(smoothie, id));
         return ResponseEntity.ok(new SmoothieWithDetailsJson(response));
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('BUSINESS_OWNER')")
     public ResponseEntity<UUID> deleteById(@PathVariable("id") UUID id) {
-        deleteSmoothieService.execute(new EntityRequest(id));
+        deleteSmoothieUseCase.execute(new EntityRequest(id));
         return ResponseEntity.ok(id);
     }
-
-//    @PostMapping("/order")
-//    @PreAuthorize("hasRole('USER')")
-//    public ResponseEntity orderSmoothies() {
-//
-//    }
 }
