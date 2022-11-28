@@ -10,6 +10,10 @@
   - docker build -t smoothie-app:latest .
   - docker-compose up -d
 - Now the application is running/listening on localhost:8080
+- Alternatively, application could be started locally but would require POSTGRES connection details as env variables/app arguments
+  - POSTGRES_HOST
+  - POSTGRES_USER
+  - POSTGRES_PASSWORD
 
 ### Exposed rest endpoints
 - GET /smoothie
